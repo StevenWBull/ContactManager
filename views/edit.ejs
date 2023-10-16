@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Edit Contact</h1>
-    <form action="/edit/<%= contact.id %>" method="POST">
+    <form id="editForm" action="/edit/<%= contact.id %>" method="POST">
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" value="<%= contact.name %>" required>
@@ -27,6 +27,65 @@
         </div>
         <button type="submit">Update Contact</button>
     </form>
+    <button id="deleteContactButton">Delete Contact</button>
     <a href="/">Back to Contacts</a>
 </body>
+<script>
+  document.getElementById('editForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const url = form.action;
+
+    const formData = {
+      name: form.name.value,
+      phone: form.phone.value,
+      email: form.email.value,
+      address: form.address.value,
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json', // Specify that you are sending JSON
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Redirect to home page or perform any other action
+        window.location.href = '/';
+      } else {
+        throw new Error('Failed to update contact');
+      }
+    } catch (error) {
+      console.error(error);
+      alert(error)
+      // Handle error
+    }
+  });
+  document.getElementById('deleteContactButton').addEventListener('click', async function(event) {
+    event.preventDefault();
+
+    const contactId = <%= JSON.stringify(contact.id) %>;
+
+    try {
+      const response = await fetch(`/delete/${contactId}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        // Redirect to home page or perform any other action
+        window.location.href = '/';
+      } else {
+        throw new Error('Failed to delete contact');
+      }
+    } catch (error) {
+      console.error(error);
+      alert(error)
+      // Handle error
+    }
+  });
+  </script>
 </html>

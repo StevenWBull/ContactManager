@@ -12,14 +12,24 @@ app.set('view engine', 'ejs');
 
 // Middleware function for data validation
 function validateContact(req, res, next) {
-  const { name, phone } = req.body;
-
-  if (!name || typeof name !== 'string' || !phone || typeof phone !== 'string') {
-    return res.status(400).json({ error: 'Invalid data format' });
+    const { name, phone, email } = req.body;
+    let errorMessage = '';
+  
+    if (!name || typeof name !== 'string')
+      errorMessage += 'Name is required and must be a string. ';
+  
+    if (!phone || typeof phone !== 'string')
+      errorMessage += 'Phone is required and must be a string. ';
+  
+    if (!email || typeof email !== 'string')
+      errorMessage += 'Email is required and must be a string. ';
+  
+    if (errorMessage)
+      return res.status(400).json({ error: errorMessage.trim() });
+  
+    next();
   }
-
-  next();
-}
+  
 
 // Load contacts from JSON file
 function loadContacts() {
@@ -44,6 +54,10 @@ app.get('/contact/:id', (req, res) => {
   res.render('edit', { contact });
 });
 
+app.get('/add', (req, res) => {
+    res.render('add');
+  });
+
 app.post('/add', validateContact, (req, res) => {
   const contacts = loadContacts();
   const newContact = {
@@ -66,7 +80,7 @@ app.put('/edit/:id', validateContact, (req, res) => {
 
   contacts[contactIndex] = { id, ...req.body };
   fs.writeFileSync('contacts.json', JSON.stringify(contacts, null, 2));
-  res.redirect('/');
+  return res.status(200).end();
 });
 
 app.delete('/delete/:id', (req, res) => {
@@ -80,7 +94,7 @@ app.delete('/delete/:id', (req, res) => {
 
   contacts.splice(contactIndex, 1);
   fs.writeFileSync('contacts.json', JSON.stringify(contacts, null, 2));
-  res.redirect('/');
+  res.status(204).end();
 });
 
 app.listen(port, () => {
