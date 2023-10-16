@@ -97,6 +97,13 @@ app.delete('/delete/:id', (req, res) => {
   res.status(204).end();
 });
 
+// Define your catch-all error handler middleware at the end
+app.use((err, req, res, next) => {
+    console.error(err); // Log the error for debugging purposes
+  
+    res.status(500).json({ error: 'Something went wrong' });
+  });
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
