@@ -25,9 +25,11 @@
             <label for="address">Address:</label>
             <input type="text" id="address" name="address" value="<%= contact.address %>">
         </div>
-        <button type="submit">Update Contact</button>
+        <div id="editBtns">
+            <button type="submit">Update Contact</button>
+            <button id="deleteContactButton">Delete Contact</button>
+        </div>
     </form>
-    <button id="deleteContactButton">Delete Contact</button>
     <a href="/">Back to Contacts</a>
 </body>
 <script>

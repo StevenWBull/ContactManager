@@ -11,9 +11,10 @@
     <ul class="contact-list">
         <% contacts.forEach(function(contact) { %>
             <li>
-                <a href="/contact/<%= contact.id %>"><%= contact.name %></a>
+                <span><b><%= contact.name %></b></span>
                 <span class="phone"><%= contact.phone %></span>
                 <span class="email"><%= contact.email %></span>
+                <a href="/contact/<%= contact.id %>">Edit</a>
             </li>
         <% }); %>
     </ul>
