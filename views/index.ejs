@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Directory</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Contact Directory</h1>
+    <ul class="contact-list">
+        <% contacts.forEach(function(contact) { %>
+            <li>
+                <a href="/contact/<%= contact.id %>"><%= contact.name %></a>
+                <span class="phone"><%= contact.phone %></span>
+                <span class="email"><%= contact.email %></span>
+            </li>
+        <% }); %>
+    </ul>
+    <a href="/add">Add Contact</a>
+</body>
+</html>
